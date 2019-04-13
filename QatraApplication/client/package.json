@@ -6,7 +6,10 @@
     "drizzle": "^1.4.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8"
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "2.1.8",
+    "react-native": "^0.59.4",
+    "react-navigation": "^3.8.1"
   },
   "scripts": {
     "start": "react-scripts start",
