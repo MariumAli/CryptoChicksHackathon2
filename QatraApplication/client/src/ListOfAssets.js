@@ -2,55 +2,23 @@ import React from "react";
 import './ListOfAssets.css';
 
 class ListOfAssets extends React.Component {
+  //   constructor(props) {
+  //   super(props);
+  //   //this.buttonPress = this.buttonPress.bind(this);
+  // }
   state = { stackId: null };
-
-  handleKeyDown = e => {
-    // if the enter key is pressed, set the value with the string
-    if (e.keyCode === 13) {
-      this.setValue(e.target.value);
-    }
-  };
-
-  setValue = value => {
-    const { drizzle, drizzleState } = this.props;
-    const contract = drizzle.contracts.Asset;
-
-    // let drizzle know we want to call the `set` method with `value`
-    const stackId = contract.methods["set"].cacheSend(value, {
-      from: drizzleState.accounts[0]
-    });
-
-    // save the `stackId` for later reference
-    this.setState({ stackId });
-  };
-
-  getTxStatus = () => {
-    // get the transaction states from the drizzle state
-    const { transactions, transactionStack } = this.props.drizzleState;
-
-    // get the transaction hash using our saved `stackId`
-    const txHash = transactionStack[this.state.stackId];
-
-    // if transaction hash does not exist, don't display anything
-    if (!txHash) return null;
-
-    // otherwise, return the transaction status
-    return `Transaction status: ${transactions[txHash] && transactions[txHash].status}`;
-  };
-
-  render() {
-    var data = {
+  data = {
     columns: ['Blood Group', 'Organization', 'City', 'Units Available'],
     rows: [{
         'Blood Group': 'O+',
         'Organization': 'Aga Khan University Hospital',
         'City': 'Karachi',
-        'Units Available': 65
+        'Units Available': 62
       }, {
         'Blood Group': 'O-',
         'Organization': 'National Institute Of Medical Centre',
         'City': 'Lahore',
-        'Units Available': 12
+        'Units Available': 9
       }, {
         'Blood Group': 'AB+',
         'Organization': 'Shaukat Khanum Hospital',
@@ -88,8 +56,46 @@ class ListOfAssets extends React.Component {
         'Units Available': 34
       }]
     };
-    var dataColumns = data.columns;
-    var dataRows = data.rows;
+
+  handleKeyDown = e => {
+    // if the enter key is pressed, set the value with the string
+    if (e.keyCode === 13) {
+      this.setValue(e.target.value);
+    }
+  };
+
+  setValue = value => {
+    const { drizzle, drizzleState } = this.props;
+    const contract = drizzle.contracts.Asset;
+
+    // let drizzle know we want to call the `set` method with `value`
+    const stackId = contract.methods["set"].cacheSend(value, {
+      from: drizzleState.accounts[0]
+    });
+
+    // save the `stackId` for later reference
+    this.setState({ stackId });
+  };
+
+  getTxStatus = () => {
+    // get the transaction states from the drizzle state
+    const { transactions, transactionStack } = this.props.drizzleState;
+
+    // get the transaction hash using our saved `stackId`
+    const txHash = transactionStack[this.state.stackId];
+
+    // if transaction hash does not exist, don't display anything
+    if (!txHash) return null;
+
+    // otherwise, return the transaction status
+    return `Transaction status: ${transactions[txHash] && transactions[txHash].status}`;
+  };
+
+
+  render() {
+    
+    var dataColumns = this.data.columns;
+    var dataRows = this.data.rows;
     var tableHeaders = (
     <thead>
         <tr>
@@ -105,7 +111,7 @@ class ListOfAssets extends React.Component {
       <tr>
         {dataColumns.map(function(column) {
           return <td>{row[column]}</td>})}
-        <td><button type="button">Request</button></td>
+        <td><button type="button" onClick="row['Units Available']--">Request</button></td>
       </tr>
       </tbody>
       ); });
@@ -122,5 +128,4 @@ class ListOfAssets extends React.Component {
     );
   }
 }
-
 export default ListOfAssets;
